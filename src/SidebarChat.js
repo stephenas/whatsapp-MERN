@@ -3,6 +3,7 @@ import { Avatar } from "@material-ui/core";
 import "./SidebarChat.css";
 import db from "./firebase";
 import { Link } from "react-router-dom";
+import firebase from "firebase";
 
 function SidebarChat({ addNewChat, id, name }) {
   const [seed, setSeed] = useState("");
@@ -21,25 +22,34 @@ function SidebarChat({ addNewChat, id, name }) {
   }, [id]);
 
   useEffect(() => {
-    setSeed(Math.floor(Math.random() * 2000));
+    setSeed(Math.floor(Math.random() * 1500));
   }, []);
+  const avatarPhoto = `https://avatars.dicebear.com/api/human/${seed}.svg`;
 
   const createChat = () => {
     const roomName = prompt("Please enter name for chat");
     if (roomName) {
       db.collection("rooms").add({
         name: roomName,
+        avatar: avatarPhoto,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp(),
       });
     }
+  };
+
+  const stringConcat = (lastMessage, n = 50) => {
+    return lastMessage?.length > n
+      ? lastMessage.substr(0, n - 1) + "..."
+      : lastMessage;
   };
 
   return !addNewChat ? (
     <Link to={`/rooms/${id}`}>
       <div className="sidebarChat">
-        <Avatar src={`https://avatars.dicebear.com/api/human/${seed}.svg`} />
+        <Avatar src={avatarPhoto} />
         <div className="sidebarChat__info">
           <h3>{name}</h3>
-          <p>{messages[0]?.message}</p>
+          <p>{stringConcat(messages[0]?.message)}</p>
         </div>
       </div>
     </Link>

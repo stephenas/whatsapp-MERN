@@ -19,13 +19,21 @@ function Chat() {
   const [roomName, setRoomName] = useState("");
   const [messages, setMessages] = useState([]);
   const [{ user }, dispatch] = useStateValue();
+  const [avatar, setAvatar] = useState("");
   console.log("Room Id - ", roomId);
+
+  /*useEffect(() => {
+    setSeed(Math.floor(Math.random() * 2000));
+  }, []);*/
 
   useEffect(() => {
     if (roomId) {
       db.collection("rooms")
         .doc(roomId)
-        .onSnapshot((snapshot) => setRoomName(snapshot.data().name));
+        .onSnapshot((snapshot) => {
+          setRoomName(snapshot.data()?.name);
+          setAvatar(snapshot.data()?.avatar);
+        });
       db.collection("rooms")
         .doc(roomId)
         .collection("messages")
@@ -53,17 +61,47 @@ function Chat() {
     setInput("");
   };
 
+  function timeConvert(timeStamp) {
+    let minutes = Math.floor((Date.now() - timeStamp) / 60000);
+    let hours = Math.floor(minutes / 60);
+    let days = Math.floor(hours / 24);
+    let weeks = Math.floor(days / 7);
+    let months = Math.floor(weeks / 4);
+    let years = Math.floor(months / 12);
+
+    if (years > 0) {
+      if (years === 1) return "1 year ago";
+      else return `${years} years ago`;
+    }
+    if (months > 0) {
+      if (months === 1) return "1 month ago";
+      else return `${months} months ago`;
+    }
+    if (weeks > 0) {
+      if (weeks == 1) return "1 week ago";
+      return `${weeks} weeks ago`;
+    }
+    if (days > 0) {
+      return `${days} days ago`;
+    }
+    if (hours > 0) {
+      return `${hours} hours ago`;
+    }
+    if (minutes > 0) {
+      if (minutes == 1) return "1 min ago";
+      else return `${minutes} mins ago`;
+    } else return "now";
+  }
+
   return (
     <div className="chat">
       <div className="chat__header">
-        <Avatar />
+        <Avatar src={avatar} />
         <div className="chat__headerInfo">
           <h3>{roomName}</h3>
           <p>
             last seen{" "}
-            {new Date(
-              messages[messages.length - 1]?.timestamp?.toDate()
-            ).toUTCString()}
+            {timeConvert(messages[messages.length - 1]?.timestamp?.toDate())}
           </p>
         </div>
         <div className="chat__headerRight">
@@ -86,7 +124,7 @@ function Chat() {
             <span className="chat__name">{message.name}</span>
             {message.message}
             <span className="chat__timestamp">
-              {new Date(message.timestamp?.toDate()).toUTCString()}
+              {new Date(message.timestamp?.toDate()).toLocaleString()}
             </span>
           </p>
         ))}

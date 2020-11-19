@@ -10,6 +10,10 @@ import { useStateValue } from "./StateProvider";
 
 function App() {
   const [{ user }, dispatch] = useStateValue();
+  const [seed, setSeed] = useState("");
+  useEffect(() => {
+    setSeed(Math.floor(Math.random() * 2000));
+  }, []);
 
   // const [messages, setMessages] = useState([]);
   /*useEffect(() => {

@@ -33,7 +33,7 @@
   background-repeat: repeat;
   background-position: center;
   padding: 30px;
-  overflow: scroll;
+  overflow: auto;
 }
 
 .chat__messages {
@@ -89,10 +89,6 @@
 }
 .chat__send {
   display: none !important;
-}
-
-.chat__record {
-  /* display: none !important; */
 }
 
 .chat__footer > .MuiSvgIcon-root {

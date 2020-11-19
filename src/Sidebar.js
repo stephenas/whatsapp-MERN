@@ -9,19 +9,21 @@ import "./Sidebar.css";
 import db from "./firebase";
 import { useStateValue } from "./StateProvider";
 
-function Sidebar() {
+function Sidebar(avatar) {
   const [rooms, setRooms] = useState([]);
   const [{ user }, dispatch] = useStateValue();
 
   useEffect(() => {
-    db.collection("rooms").onSnapshot((snapshot) => {
-      setRooms(
-        snapshot.docs.map((doc) => ({
-          id: doc.id,
-          data: doc.data(),
-        }))
-      );
-    });
+    db.collection("rooms")
+      .orderBy("timestamp", "desc")
+      .onSnapshot((snapshot) => {
+        setRooms(
+          snapshot.docs.map((doc) => ({
+            id: doc.id,
+            data: doc.data(),
+          }))
+        );
+      });
   }, []);
   return (
     <div className="sidebar">

@@ -40,6 +40,7 @@ function App() {
 
   return (
     <div className="app">
+      {/* if user not logged in */}
       {!user ? (
         <Login />
       ) : (

@@ -8,9 +8,12 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Login from "./Login";
 import { useStateValue } from "./StateProvider";
 
+
+
 function App() {
   const [{ user }, dispatch] = useStateValue();
   const [seed, setSeed] = useState("");
+  
   useEffect(() => {
     setSeed(Math.floor(Math.random() * 2000));
   }, []);

@@ -46,15 +46,19 @@ function SidebarChat({ addNewChat, id, name }) {
   return !addNewChat ? (
     <Link to={`/rooms/${id}`}>
       <div className="sidebarChat">
-        <Avatar src={avatarPhoto} />
-        <div className="sidebarChat__info">
-          <h3>{name}</h3>
-          <p>{stringConcat(messages[0]?.message)}</p>
+        <div className="sidebarChat__avatar">
+          <Avatar src={avatarPhoto} />
+        </div>
+        <div className="sidebarChat__container">
+          <div className="sidebarChat__info">
+            <h3>{name}</h3>
+            <p>{stringConcat(messages[0]?.message)}</p>
+          </div>
         </div>
       </div>
     </Link>
   ) : (
-    <div onClick={createChat} className="sidebarChat">
+    <div onClick={createChat} className="sidebarChat__addNew">
       <h2>Add new Chat</h2>
     </div>
   );

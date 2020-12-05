@@ -7,13 +7,19 @@ import axios from "./axios";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Login from "./Login";
 import { useStateValue } from "./StateProvider";
-
-
+import { useMediaQuery } from "react-responsive";
 
 function App() {
   const [{ user }, dispatch] = useStateValue();
   const [seed, setSeed] = useState("");
-  
+
+  const isTabletOrMobile = useMediaQuery({ query: "(max-width: 1224px)" });
+  const isTabletOrMobileDevice = useMediaQuery({
+    query: "(max-device-width: 1224px)",
+  });
+  const isPortrait = useMediaQuery({ query: "(orientation: portrait)" });
+  const isRetina = useMediaQuery({ query: "(min-resolution: 2dppx)" });
+
   useEffect(() => {
     setSeed(Math.floor(Math.random() * 2000));
   }, []);
@@ -41,7 +47,7 @@ function App() {
     };
   }, [messages]);*/
 
-  return (
+  return !isPortrait ? (
     <div className="app">
       {/* if user not logged in */}
       {!user ? (
@@ -61,6 +67,15 @@ function App() {
           </Router>
         </div>
       )}
+    </div>
+  ) : (
+    <div className="landscape">
+      <div className="landscape__container">
+        <h1>
+          Keep your desktop on full screen or mobile device in landscape for
+          better user exeprience{" "}
+        </h1>
+      </div>
     </div>
   );
 }

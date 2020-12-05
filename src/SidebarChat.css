@@ -41,4 +41,10 @@ a {
   padding: 30px;
   cursor: pointer;
   border-bottom: 1px solid #f6f6f6;
+  transition: ease-in 0.3s;
+}
+
+.sidebarChat__addNew:hover {
+  background-color: #f1eded;
+  transform: scale(1.05);
 }

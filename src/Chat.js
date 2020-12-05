@@ -93,12 +93,22 @@ function Chat() {
     } else return "now";
   }
 
-  return (
+  return !roomId ? (
+    <div className="chat">
+      <div className="chat__room">
+        <h2>
+          Add new chat or Click on name to continue to chat or message with
+          group
+        </h2>
+      </div>
+    </div>
+  ) : (
     <div className="chat">
       <div className="chat__header">
         <Avatar src={avatar} />
         <div className="chat__headerInfo">
-          <h3>{roomName}</h3>
+          {!roomName && <h3>Test app</h3>}
+          {roomName && <h3>{roomName}</h3>}
           <p>
             last seen{" "}
             {timeConvert(messages[messages.length - 1]?.timestamp?.toDate())}
@@ -130,10 +140,10 @@ function Chat() {
         ))}
 
         {/* <p className="chat__messages chat__receiver">
-          <span className="chat__name">steve</span>
-          here Messages
-          <span className="chat__timestamp">{new Date().toUTCString()}</span>
-        </p> */}
+            <span className="chat__name">steve</span>
+            here Messages
+            <span className="chat__timestamp">{new Date().toUTCString()}</span>
+          </p> */}
       </div>
       <div className="chat__footer">
         <IconButton>
@@ -155,13 +165,9 @@ function Chat() {
             Send message
           </button>
         </form>
-        {/* <IconButton
-          onClick={sendMessage}
-          type="submit"
-          className="chat__send chat__send__active"
-        >
+        <IconButton onClick={sendMessage} type="submit" className="chat__send">
           <SendIcon />
-        </IconButton> */}
+        </IconButton>
         <IconButton className="chat__record">
           <MicOutlinedIcon />
         </IconButton>
